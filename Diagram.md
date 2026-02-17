@@ -1,3 +1,5 @@
+```mermaid
+
 flowchart TD
 
 %% ---------------- FLOW ----------------
@@ -64,3 +66,5 @@ class D,E,F,G,H,I,J,K,N,O,P,Q,R,S,T,U,V,W system;
 
 %% Decision Points
 class C,X decision;
+
+```
