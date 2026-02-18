@@ -1,3 +1,4 @@
+```mermaid
 flowchart TD
 
 %% ---------------- FLOW ----------------
@@ -22,7 +23,7 @@ I --> J[Feature Engineering<br/>Raw Values or Log Returns]
 J --> K[Standardize Data]
 
 K --> L[User Selects Number of Regimes K]
-L --> M[Click "Detect Regimes"]
+L --> M[Click Detect Regimes]
 
 M --> N[Train Hidden Markov Model]
 N --> O[Infer Hidden State Sequence]
@@ -56,11 +57,7 @@ classDef user fill:#E3F2FD,stroke:#1565C0,stroke-width:3px,font-size:20px,font-w
 classDef system fill:#E8F5E9,stroke:#2E7D32,stroke-width:3px,font-size:20px,font-weight:bold;
 classDef decision fill:#F3E5F5,stroke:#6A1B9A,stroke-width:3px,font-size:20px,font-weight:bold;
 
-%% User Actions
 class A,B,L,M,Y,Z,AA,AB user;
-
-%% System Processing
 class D,E,F,G,H,I,J,K,N,O,P,Q,R,S,T,U,V,W system;
-
-%% Decision Points
 class C,X decision;
+```
