@@ -33,4 +33,4 @@ Upload → Preprocessing → HMM Training (EM) → Viterbi Inference → Visuali
 ---
 
 ### 🔄 User Flow Diagram
-![User Flow](diagrams/wireframes/UserFlowDiagram (2).png)
+![User Flow](diagrams/wireframes/UserFlowDiagram.png)

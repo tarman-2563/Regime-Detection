@@ -1,3 +1,5 @@
+```mermaid
+
 flowchart TB
 
 subgraph Client Layer
@@ -42,3 +44,5 @@ ModelService --> MLService
 MLService --> DB
 
 ResultService --> DB
+
+```
