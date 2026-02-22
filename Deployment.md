@@ -1,85 +1,96 @@
-Deployment Plan Document
+# Deployment Plan Document
 
-Project: Market / Time Series Regime Detection using Hidden Markov Models
-Tech Stack: React, FastAPI, PostgreSQL, Docker
+## Project
+Market / Time Series Regime Detection using Hidden Markov Models
 
-1. Deployment Architecture Overview
+## Tech Stack
+React, FastAPI, PostgreSQL, Docker
 
-The system follows a containerized deployment architecture separating frontend, backend, and database services. The frontend communicates with the FastAPI backend via REST APIs. The backend interacts with PostgreSQL for persistent storage and executes the ML pipeline for regime detection.
+---
 
-2. Components
+## 1. Deployment Architecture Overview
 
-• Frontend: React + Tailwind CSS + Recharts
-• Backend: FastAPI + ML Pipeline (Pandas, NumPy, Scikit-learn, hmmlearn)
-• Database: PostgreSQL
-• Containerization: Docker
-• Optional Hosting: Render / AWS / Railway
+The system follows a containerized deployment architecture separating frontend, backend, and database services.
 
-3. Dockerization Plan
-Frontend Container:
+The frontend communicates with the FastAPI backend via REST APIs.  
+The backend interacts with PostgreSQL for persistent storage and executes the ML pipeline for regime detection.
 
-Build React application
+---
 
-Serve production build using Nginx
+## 2. Components
 
-Expose port 3000
+- **Frontend:** React + Tailwind CSS + Recharts
+- **Backend:** FastAPI + ML Pipeline (Pandas, NumPy, Scikit-learn, hmmlearn)
+- **Database:** PostgreSQL
+- **Containerization:** Docker
+- **Optional Hosting:** Render / AWS / Railway
 
-Backend Container:
+---
 
-Use Python 3.10 base image
+## 3. Dockerization Plan
 
-Install dependencies from requirements.txt
+### Frontend Container
 
-Run FastAPI using Uvicorn
+- Build React application
+- Serve production build using Nginx
+- Expose port 3000
 
-Expose port 8000
+### Backend Container
 
-Database Container:
+- Use Python 3.10 base image
+- Install dependencies from requirements.txt
+- Run FastAPI using Uvicorn
+- Expose port 8000
 
-Use official PostgreSQL image
+### Database Container
 
-Configure environment variables for DB credentials
+- Use official PostgreSQL image
+- Configure environment variables for DB credentials
+- Expose port 5432
 
-Expose port 5432
+---
 
-4. Docker Compose Configuration
+## 4. Docker Compose Configuration
 
-Docker Compose orchestrates frontend, backend, and database services. It ensures inter-service networking and environment variable configuration.
+Docker Compose orchestrates frontend, backend, and database services.  
+It ensures inter-service networking and environment variable configuration.
 
-5. Environment Configuration
+---
 
-Environment variables stored securely in .env file:
+## 5. Environment Configuration
 
-DATABASE_URL
+Environment variables stored securely in `.env` file:
 
-SECRET_KEY
+- DATABASE_URL
+- SECRET_KEY
+- JWT_ALGORITHM
+- ACCESS_TOKEN_EXPIRE_MINUTES
 
-JWT_ALGORITHM
+---
 
-ACCESS_TOKEN_EXPIRE_MINUTES
+## 6. Cloud Deployment Options
 
-6. Cloud Deployment Options
-Option 1: Render (Easy deployment)
-Option 2: AWS (EC2 + RDS + S3)
-Option 3: Railway (Quick prototype deployment)
-7. Production Readiness Checklist
+- Option 1: Render (Easy deployment)
+- Option 2: AWS (EC2 + RDS + S3)
+- Option 3: Railway (Quick prototype deployment)
 
-Enable HTTPS (SSL)
+---
 
-Configure CORS properly
+## 7. Production Readiness Checklist
 
-Use secure JWT expiration
+- Enable HTTPS (SSL)
+- Configure CORS properly
+- Use secure JWT expiration
+- Add logging and monitoring
+- Apply database indexing
+- Handle file size limits
 
-Add logging and monitoring
+---
 
-Apply database indexing
+## 8. Deployment Flow Summary
 
-Handle file size limits
-
-8. Deployment Flow Summary
-
-User → Frontend (React)
-Frontend → Backend API (FastAPI)
-Backend → ML Pipeline Execution
-Backend → PostgreSQL Database
+User → Frontend (React)  
+Frontend → Backend API (FastAPI)  
+Backend → ML Pipeline Execution  
+Backend → PostgreSQL Database  
 Results → Stored and returned to Frontend for visualization
