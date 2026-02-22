@@ -1,295 +1,350 @@
-Feature Breakdown
-Authentication Module
+# Feature Breakdown
 
-User login
+## Authentication Module
 
-Session management
+- User login
+- Session management
+- Logout
+- User-specific model history
+- Invalid credential handling
 
-Logout
-
-User-specific model history
-
-Invalid credential handling
-
-Tech Stack:
+### Tech Stack:
 
 FastAPI (backend), JWT (authentication), PostgreSQL (user storage), bcrypt (password hashing)
 
-Data Ingestion Module
+---
 
-Upload time-series CSV file
+## Data Ingestion Module
 
-Drag-and-drop upload support
+- Upload time-series CSV file
+- Drag-and-drop upload support
+- File format validation
+- Timestamp column detection
+- Numeric column detection
+- Data preview (first few rows)
+- Summary statistics display
+- Invalid file error handling
 
-File format validation
-
-Timestamp column detection
-
-Numeric column detection
-
-Data preview (first few rows)
-
-Summary statistics display
-
-Invalid file error handling
-
-Tech Stack:
+### Tech Stack:
 
 FastAPI (file upload endpoint), Pandas (CSV parsing), Python datetime, PostgreSQL (dataset metadata storage)
 
-Data Preprocessing Module
+---
 
-Timestamp parsing
+## Data Preprocessing Module
 
-Chronological sorting
+- Timestamp parsing
+- Chronological sorting
+- Resampling (hourly/daily)
+- Missing value handling
+- Feature engineering (Raw values / Log returns)
+- Data standardization
 
-Resampling (hourly/daily)
-
-Missing value handling
-
-Feature engineering (Raw values / Log returns)
-
-Data standardization
-
-Tech Stack:
+### Tech Stack:
 
 Pandas (resampling, cleaning), NumPy (feature engineering), Scikit-learn (StandardScaler)
 
-Model Configuration Module
+---
 
-Feature selection dropdown
+## Model Configuration Module
 
-Feature type selection (Raw / Log Returns)
+- Feature selection dropdown
+- Feature type selection (Raw / Log Returns)
+- Number of regimes (K) input
+- Detect Regimes button
+- Model parameter validation
+- Invalid K handling
 
-Number of regimes (K) input
-
-Detect Regimes button
-
-Model parameter validation
-
-Invalid K handling
-
-Tech Stack:
+### Tech Stack:
 
 React (UI controls), FastAPI (parameter validation), Pydantic (request validation)
 
-HMM Training Module
+---
 
-Gaussian Hidden Markov Model initialization
+## HMM Training Module
 
-EM (Baum-Welch) training
+- Gaussian Hidden Markov Model initialization
+- EM (Baum-Welch) training
+- Transition matrix estimation
+- Emission mean calculation
+- Emission variance calculation
+- Log-likelihood computation
+- Convergence monitoring
 
-Transition matrix estimation
-
-Emission mean calculation
-
-Emission variance calculation
-
-Log-likelihood computation
-
-Convergence monitoring
-
-Tech Stack:
+### Tech Stack:
 
 hmmlearn (GaussianHMM), NumPy, Scikit-learn
 
-Regime Inference Module
+---
 
-Viterbi decoding
+## Regime Inference Module
 
-Hidden state sequence generation
+- Viterbi decoding
+- Hidden state sequence generation
+- Regime labeling
+- Regime duration calculation
 
-Regime labeling
-
-Regime duration calculation
-
-Tech Stack:
+### Tech Stack:
 
 hmmlearn (Viterbi decoding)
 
-Explainability Module
+---
 
-Display regime mean
+## Explainability Module
 
-Display regime variance
+- Display regime mean
+- Display regime variance
+- Display transition probabilities
+- Regime duration percentage
+- Textual regime interpretation
 
-Display transition probabilities
-
-Regime duration percentage
-
-Textual regime interpretation
-
-Tech Stack:
+### Tech Stack:
 
 FastAPI (response formatting), React (display logic)
 
-Visualisation Module
+---
 
-Time Series line chart
+## Visualisation Module
 
-Color coded regime overlay
+- Time Series line chart
+- Color coded regime overlay
+- Transition matrix heatmap
+- Regime summary table
 
-Transition matrix heatmap
-
-Regime summary table
-
-Tech Stack:
+### Tech Stack:
 
 React, Recharts (line charts), Tailwind CSS
 
-Persistence & History Module
+---
 
-Save model run
+## Persistence & History Module
 
-Store dataset metadata
+- Save model run
+- Store dataset metadata
+- Store model parameters
+- Retrieve previous model runs
+- Compare different K values
+- View model history
 
-Store model parameters
-
-Retrieve previous model runs
-
-Compare different K values
-
-View model history
-
-Tech Stack:
+### Tech Stack:
 
 PostgreSQL, SQLAlchemy (ORM), FastAPI
 
-Export Module
+---
 
-Export regime sequence [CSV, PDF, JSON]
+## Export Module
 
-Download results report
+- Export regime sequence [CSV, PDF, JSON]
+- Download results report
 
-API Planning
-System Flow
+---
+
+# API Planning
+
+## System Flow
 
 Upload CSV → Validate → Preprocess → Train HMM → Infer regimes → Store results → Retrieve history
 
-Authentication APIs
+---
 
-Register API: POST /auth/register
+## Authentication APIs
+
+### Register API
+`POST /auth/register`
+
 Creates a new user account and stores hashed password in database.
 
-Login API: POST /auth/login
+### Login API
+`POST /auth/login`
+
 Authenticates user credentials and returns JWT access token.
 
-Dataset APIs
+---
 
-Upload API: POST /datasets/upload
+## Dataset APIs
+
+### Upload API
+`POST /datasets/upload`
+
 Receives CSV file, validate it, parses timestamps, detects numeric columns, returns preview and summary statistics.
 
-Get Dataset API: GET /datasets/{dataset_id}
+### Get Dataset API
+`GET /datasets/{dataset_id}`
+
 Fetches uploaded dataset metadata and details.
 
-Model APIs
+---
 
-Train Model API: POST /models/train
+## Model APIs
+
+### Train Model API
+`POST /models/train`
+
 Triggers preprocessing (resample, missing handling, feature engineering, standardization) and Gaussian HMM training using EM algorithm. Also runs Viterbi inference and stores results.
 
-Get Model Summary API: GET /models/{model_id}
+### Get Model Summary API
+`GET /models/{model_id}`
+
 Fetches stored model metadata including K value, feature type, and log-likelihood.
 
-Get Regime Parameters API: GET /models/{model_id}/regimes
+### Get Regime Parameters API
+`GET /models/{model_id}/regimes`
+
 Returns regime mean, variance, duration percentage, and interpretation.
 
-Get Transition Matrix API: GET /models/{model_id}/transitions
+### Get Transition Matrix API
+`GET /models/{model_id}/transitions`
+
 Fetches transition probability matrix of trained HMM.
 
-Get Regime Sequence API: GET /models/{model_id}/sequence
+### Get Regime Sequence API
+`GET /models/{model_id}/sequence`
+
 Returns timestamp-wise regime labels generated by Viterbi decoding.
 
-Save Model API: POST /models/save
+### Save Model API
+`POST /models/save`
+
 Stores model metadata and configuration in database.
 
-History API: GET /models/history
+### History API
+`GET /models/history`
+
 Fetches history of previous model runs for the authenticated user.
 
-Delete Model API: DELETE /models/{model_id}
+### Delete Model API
+`DELETE /models/{model_id}`
+
 Deletes a specific trained model and associated regime data.
 
-Export API: GET /models/{model_id}/export
+### Export API
+`GET /models/{model_id}/export`
+
 Exports model results and regime sequence as CSV, JSON, or PDF.
 
-Database Entity Identification
-1. Users Table
-Field	Type
-id	UUID
-email	TEXT
-password_hash	TEXT
-created_at	TIMESTAMP
-2. Datasets Table
-Field	Type
-id	UUID
-user_id	FK
-file_name	TEXT
-upload_time	TIMESTAMP
-row_count	INT
-column_count	INT
-3. Model Runs Table
-Field	Type
-id	UUID
-dataset_id	FK
-user_id	FK
-k	INT
-feature	TEXT
-feature_type	TEXT
-log_likelihood	FLOAT
-created_at	TIMESTAMP
-4. Regime Parameters Table
-Field	Type
-id	UUID
-model_id	FK
-regime_index	INT
-mean	FLOAT
-variance	FLOAT
-5. Transition Matrix Table
-Field	Type
-id	UUID
-model_id	FK
-from_regime	INT
-to_regime	INT
-probability	FLOAT
-6. Regime Sequence Table
-Field	Type
-id	UUID
-model_id	FK
-timestamp	TIMESTAMP
-regime_label	INT
-Relationships
-1. USERS → DATASETS
+---
 
-Relationship: One-to-Many (1 : N)
-One user can upload many datasets.
+# Database Entity Identification
+
+## 1. Users Table
+
+| Field         | Type      |
+|--------------|----------|
+| id           | UUID     |
+| email        | TEXT     |
+| password_hash| TEXT     |
+| created_at   | TIMESTAMP|
+
+---
+
+## 2. Datasets Table
+
+| Field        | Type      |
+|-------------|----------|
+| id          | UUID     |
+| user_id     | FK       |
+| file_name   | TEXT     |
+| upload_time | TIMESTAMP|
+| row_count   | INT      |
+| column_count| INT      |
+
+---
+
+## 3. Model Runs Table
+
+| Field          | Type      |
+|---------------|----------|
+| id            | UUID     |
+| dataset_id    | FK       |
+| user_id       | FK       |
+| k             | INT      |
+| feature       | TEXT     |
+| feature_type  | TEXT     |
+| log_likelihood| FLOAT    |
+| created_at    | TIMESTAMP|
+
+---
+
+## 4. Regime Parameters Table
+
+| Field        | Type  |
+|-------------|------|
+| id          | UUID |
+| model_id    | FK   |
+| regime_index| INT  |
+| mean        | FLOAT|
+| variance    | FLOAT|
+
+---
+
+## 5. Transition Matrix Table
+
+| Field       | Type  |
+|------------|------|
+| id         | UUID |
+| model_id   | FK   |
+| from_regime| INT  |
+| to_regime  | INT  |
+| probability| FLOAT|
+
+---
+
+## 6. Regime Sequence Table
+
+| Field        | Type      |
+|-------------|----------|
+| id          | UUID     |
+| model_id    | FK       |
+| timestamp   | TIMESTAMP|
+| regime_label| INT      |
+
+---
+
+# Relationships
+
+## 1. USERS → DATASETS
+
+Relationship: One-to-Many (1 : N)  
+One user can upload many datasets.  
 Each dataset belongs to one user.
 
-2. USERS → MODEL_RUNS
+---
 
-Relationship: One-to-Many (1 : N)
-One user can train many models.
+## 2. USERS → MODEL_RUNS
+
+Relationship: One-to-Many (1 : N)  
+One user can train many models.  
 Each model run belongs to one user.
 
-3. DATASETS → MODEL_RUNS
+---
 
-Relationship: One-to-Many (1 : N)
-One dataset can generate multiple model runs.
+## 3. DATASETS → MODEL_RUNS
+
+Relationship: One-to-Many (1 : N)  
+One dataset can generate multiple model runs.  
 Each model run is based on one dataset.
 
-4. MODEL_RUNS → REGIME_PARAMETERS
+---
 
-Relationship: One-to-Many (1 : N)
-One model run has multiple regimes.
-Each regime has one mean and variance.
+## 4. MODEL_RUNS → REGIME_PARAMETERS
+
+Relationship: One-to-Many (1 : N)  
+One model run has multiple regimes.  
+Each regime has one mean and variance.  
 So one model → many regime parameter records.
 
-5. MODEL_RUNS → TRANSITIONS
+---
 
-Relationship: One-to-Many (1 : N)
-One model run has multiple transition entries.
+## 5. MODEL_RUNS → TRANSITIONS
+
+Relationship: One-to-Many (1 : N)  
+One model run has multiple transition entries.  
 Each entry represents probability from regime i → regime j.
 
-6. MODEL_RUNS → REGIME_SEQUENCES
+---
 
-Relationship: One-to-Many (1 : N)
-One model run produces many timestamp-regime mappings.
+## 6. MODEL_RUNS → REGIME_SEQUENCES
+
+Relationship: One-to-Many (1 : N)  
+One model run produces many timestamp-regime mappings.  
 Each timestamp has one regime label.
